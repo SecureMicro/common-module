@@ -1,0 +1,1 @@
+This module keeps all the common files such as common interceptors, enums, middlewares and utils.
