@@ -1,9 +1,9 @@
-import { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { logger } from "../utils/logger";
 import { QueryFailedError } from "typeorm";
 import { CustomApiError } from "../errors/api-errors/CustomApiError";
 
-const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+const errorHandler: ErrorRequestHandler = (err, _req: Request, res: Response, _next: NextFunction) => {
   let message: string = err.message;
   let statusCode: number = err.statusCode;
 
