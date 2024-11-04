@@ -1,5 +1,12 @@
 import { Express, Response } from "express";
 
+export interface IApp {
+  app: Express;
+  configureMiddleware(): void;
+  configureRoutes(): void;
+  start(port: number): void;
+}
+
 export interface IErrorClassObj {
   [key: number]: new (message: string) => Error;
 }

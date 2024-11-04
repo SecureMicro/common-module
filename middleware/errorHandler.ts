@@ -3,6 +3,7 @@ import { logger } from "../utils/logger";
 import { QueryFailedError } from "typeorm";
 import { CustomApiError } from "../errors/api-errors/CustomApiError";
 
+// @ts-ignore
 const errorHandler: ErrorRequestHandler = (err, _req: Request, res: Response, _next: NextFunction) => {
   let message: string = err.message;
   let statusCode: number = err.statusCode;
