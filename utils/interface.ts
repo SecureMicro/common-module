@@ -36,3 +36,5 @@ export interface IGetRequestUser {
   id: string;
   isActive: boolean;
 }
+
+export type THttpMethod = "get" | "post" | "delete";

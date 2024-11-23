@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { NotAuthorisedError } from "../errors";
+import { AccessForbiddenError, NotAuthorisedError } from "../errors";
 import verifyJwt from "../utils/verifyJwt";
+import { ums } from "../utils/apiService";
+import { IGetRequestUser } from "../utils/interface";
+import { isObjEmpty } from "../utils/helpers";
 
 export default function authorizer(resource?: string, action?: string) {
   return async function (
@@ -9,6 +12,7 @@ export default function authorizer(resource?: string, action?: string) {
     next: NextFunction
   ): Promise<void> {
     try {
+      console.log('here----authorizer-------------------')
       const bearerToken = req.headers["authorization"];
       if (!bearerToken) {
         throw new NotAuthorisedError("Missing header");
@@ -23,7 +27,25 @@ export default function authorizer(resource?: string, action?: string) {
 
       const decodedData = verifyJwt(token);
 
-      const { userId, role } = decodedData;
+      const { userId } = decodedData;
+
+      console.log("userId============", userId);
+
+      const getRequestUserEndpoint: string = `user/${userId}`;
+
+      const user = await ums.call<IGetRequestUser, undefined, undefined>(
+        "get",
+        getRequestUserEndpoint
+      );
+
+      if (!user || isObjEmpty(user)) {
+        throw new AccessForbiddenError(
+          "Your account has beeen disabled, please contact the administrator"
+        );
+      }
+
+      // @ts-ignore
+      req.user = user;
 
       next();
     } catch (error) {

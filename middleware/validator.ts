@@ -14,6 +14,7 @@ export default function validatePayload<T>(schema: ObjectSchema<T>) {
       if (error) {
         throw new PreConditionError(error.message.replace(/\"/g, ""));
       }
+      // @ts-ignore
       req.payload = value;
       next();
     } catch (error) {

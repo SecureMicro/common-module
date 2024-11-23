@@ -8,6 +8,9 @@ import { NotAuthorisedError } from "../errors";
 export default function verifyJwt(jwtToken: string): JwtPayload {
   const SECRET: string = process.env.JWT_SECRET!;
 
+  console.log('token-================', jwtToken);
+  console.log('secret======================', SECRET)
+
   try {
     const decodedData = <JwtPayload>jwt.verify(jwtToken, SECRET);
     return decodedData;
